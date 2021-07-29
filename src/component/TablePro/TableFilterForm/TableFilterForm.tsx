@@ -64,7 +64,7 @@ export default forwardRef<any, ITableFilterFormProps>(
           style={{ display: unfold ? "block" : "none" }}
           className={"TableFilterFormContent"}
         >
-          <Row gutter={[48, { sm: 20, xs: 20, md: 20, lg: 20, xl: 0 }]}>
+          <Row gutter={[48, 20]}>
             {data.map((item, index) => {
               const name = item.id ? item.id : item.label;
               let form;
@@ -121,7 +121,7 @@ export default forwardRef<any, ITableFilterFormProps>(
                 );
               }
               return (
-                <Col xs={20} sm={20} md={10} lg={7} xl={5} key={index}>
+                  <Col xs={20} sm={20} md={10} lg={7} xl={7} xxl={5} key={index}>
                   <FormLayout title={item.label} form={form} width={0} />
                 </Col>
               );
@@ -129,7 +129,7 @@ export default forwardRef<any, ITableFilterFormProps>(
             {/*底部按钮   如果后期有别的  可以自定义传入按钮进来通过 ref,  控制内部函数的方法
                 如没有 则先这样
             */}
-            <Col xs={20} sm={20} md={10} lg={7} xl={6}>
+              <Col xs={20} sm={20} md={10} lg={7} xl={7} xxl={4}>
               <Button
                 onClick={() => {
                   setState({});
