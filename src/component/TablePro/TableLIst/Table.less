@@ -1,0 +1,38 @@
+.tablesWarp {
+  background-color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  flex:1;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  .tableListView {
+    overflow: hidden;
+    position: relative;
+    flex:1;
+    .tableListHeader{
+      height: 50px;
+      border-bottom: #DFE4E7 1px solid;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .tableListHeaderButton + .tableListHeaderButton{
+        margin-left: 10px;
+      }
+      .tableListHeaderText{
+        font-size: var(--font-title-size);
+        color:var(--title-color);
+      }
+    }
+  }
+  .PaginationConView {
+    height: 50px;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    border-top: #DFE4E7 1px solid;
+    justify-content: flex-end;
+    padding-right: 20px;
+  }
+}

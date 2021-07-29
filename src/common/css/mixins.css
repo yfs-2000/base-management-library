@@ -1,0 +1,24 @@
+/*全局样式*/
+:root {
+    --primary-color: #00a9eb;/*基本色*/
+    --error-color: #F15454;/*错误色*/
+    --title-color:#333333;/*全局的标题颜色*/
+    --text-color:#666666;/*全局的文字颜色*/
+    --border-color:#dfe4e7;/*边框的颜色*/
+    --active-text-color:#ffffff;/*选择文字的颜色*/
+    --easy-text-color:#808080;/*选择轻文字的颜色*/
+    --border-weight-color:#dfe4e7;/*边框的颜色*/
+    --sider-color:#ffffff;/*侧边栏标题文字颜色*/
+    --base-bg:#ffffff;/*基本的背景颜色*/
+    --content-bg:#eef1f3;
+    --table-bg:#f7fafc;
+    --font-bg-size:32px;
+    --font-title-size:16px;
+    --font-text-size:14px;
+    --iconFont-size:20px;
+    /*sidebar的标准色*/
+    --sidebar-header-bg:#F7FAFC;
+    /*浅色背景色*/
+    --base-bg-simple:#EEF5F9;
+
+}

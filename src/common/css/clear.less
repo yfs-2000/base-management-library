@@ -1,0 +1,55 @@
+body {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;/*github的字体格式*/
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    h1, h2, h3, h4, h5, h6, hr, p, /*blockquote,*/ /* structural elements 结构元素 */
+    dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+   /* pre, !* text formatting elements 文本格式元素 *!*/
+    /*form, fieldset, legend, button, input, textarea, !* form elements 表单元素 *!*/
+    th, td /* table elements 表格元素 */ {
+        margin: 0;
+        padding: 0;
+    }
+    ul, ol {
+        list-style: none
+    }
+}
+/** 清除内外边距 **/
+html{
+    body{
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        color: #666666;
+        line-height: 1;
+    }
+}
+/*modal框的只有一行文字时*/
+.modalBodyText{
+    margin-bottom: 20px;
+    margin-top: 30px;
+    text-align: center;
+}
+/*图标默认大小改为14px*/
+.iconfont{
+    font-size: 14px;
+}
+.ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused{
+    box-shadow:none;
+}
+.tableOperation{
+    &>span{
+        cursor:pointer;
+        transition: color 0.2s;
+        &:hover{
+            color: var(--primary-color);
+        }
+        .iconfont{
+            margin-right: 5px;
+        }
+    }
+    &>span + span{
+        margin-left: 20px;
+    }
+}

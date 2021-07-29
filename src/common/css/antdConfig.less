@@ -1,0 +1,92 @@
+//每组按钮
+.ant-radio-button-wrapper{
+  padding: 0 20px;
+  text-align: center;
+}
+//按钮的icon 变为 14
+.ant-btn{
+  .iconfont{
+    font-size: 14px;
+    margin-right: 5px;
+  }
+}
+//按钮直接隔开10px
+button+button{
+  margin-left: 10px;
+}
+//弹窗的x位置
+.ant-modal-close-x{
+  line-height: 42px;
+}
+//弹窗的底部按钮
+.ant-modal-footer{
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 30px;
+}
+//头部的padding变为10px
+.ant-table-thead>tr>th{
+  padding: 10px;
+}
+//排序按钮的那一行
+.ant-table-column-sorters{
+  padding: 10px;
+}
+//取消每行的分割线
+.ant-table-tbody > tr > td{
+  border-bottom: none;
+}
+
+//移动上上面的hover 背景颜色
+.ant-table-row:nth-of-type(even){
+  background-color: #F7FAFC;
+  .ant-table-cell-fix-left, .ant-table-cell-fix-right{
+    background-color: #F7FAFC;
+  }
+  .ant-table-column-sort{
+    background-color: #F7FAFC;
+  }
+}
+.ant-table-small{
+  .ant-table-row{
+    background-color: #FFFFFF;
+    &:nth-of-type(odd){
+    background-color: #F7FAFC;
+    .ant-table-cell-fix-left, .ant-table-cell-fix-right{
+      background-color: #F7FAFC;
+    }
+    .ant-table-column-sort{
+      background-color: #F7FAFC;
+    }
+  }
+  }
+}
+
+
+
+.ant-table-tbody > tr.ant-table-row-selected {
+  .ant-table-cell-fix-left, .ant-table-cell-fix-right{
+    background-color: #eef5f9;
+  }
+}
+
+//菜单的icon过大  无法对齐
+.ant-menu-item{
+  display: flex;
+  align-items: center;
+}
+/*table 选择框的边距问题*/
+table tr th.ant-table-selection-column,table tr td.ant-table-selection-column{
+  text-align: left;
+  padding-left: 30px;
+  padding-right: 4px;
+}
+/*input框的box-shadow*/
+.ant-input:focus, .ant-input-focused{
+  box-shadow: none;
+}
+/*select框的box-shadow*/
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  box-shadow: none;
+}

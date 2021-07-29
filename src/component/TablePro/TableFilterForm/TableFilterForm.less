@@ -1,0 +1,30 @@
+.TableFilterForm{
+  background-color: #ffffff;
+
+  .TableFilterFormContent{
+    padding: 20px 30px;
+    border-top: 1px solid #CED1D3;
+
+  }
+  .TableFilterFormTitle{
+    height: 50px;
+    padding:0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .TableFilterFormTitleText{
+      font-size: 16px;
+      color: #333333;
+    }
+    .TableFilterFormTitleIcon{
+      cursor: pointer;
+       span:nth-child(1){//文字
+       margin-right: 5px;
+       font-size: 16px;
+     }
+       span:nth-child(2){ //按钮
+        color: var(--primary-color);
+      }
+    }
+  }
+}
