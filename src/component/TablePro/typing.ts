@@ -8,12 +8,13 @@ export interface IButtons {
   text: string;
   disabled?: boolean;
   type: ButtonType;
-  click: () => void;
+  click: (selectedRowKey: React.Key[]) => void;
 }
 //tableList表格需要传入的
 export interface ITablesListProps extends IUseRequestResult, TableProps<any> {
   headerTitle: string;
   buttons: (IButtons | null)[];
+  selectNumVisible: boolean;
 }
 //排序的值
 type sorter = {
@@ -45,32 +46,45 @@ export interface IUseRequestResult {
   handleTableSorter: (pagination: any, filters: any, sorter: any) => void;
 }
 //form的选择类型
-export type InputType = "Input" | "Select" | "TimePicker";
+export type InputType = "Input" | "Select" | "TimePicker" | "sectionBox";
+//form搜索的字段
+export type FormType = string | [Dayjs | string, Dayjs | string];
 //form的每个表单的类型
 export interface IFormDataItem {
   /* 标题 **/
   label: string;
   valueType: InputType;
   id?: string;
-  transfromOnchang?: (
-    value: string | [Dayjs, Dayjs]
-  ) => string | [Dayjs, Dayjs];
+  transfromOnchang?: (value: FormType) => FormType;
   data?: {
     name: string;
     id: number | string;
   }[];
+  onChange?: (item: FormType) => void;
+  isChangeData?: boolean;
 }
 export interface stateProps {
-  [propName: string]: string | [Dayjs, Dayjs];
+  [propName: string]: FormType;
+}
+export interface transitionValueInputProps {
+  <T extends FormType>(
+    value: T,
+    name: string,
+    onChange?: (value: T) => T
+  ): void;
 }
 //form直接的props类型
 export interface ITableFilterFormProps {
   onSearch: (state: stateProps) => void;
   data: IFormDataItem[];
+  filterTableDataChange?: (state: stateProps) => void;
 }
 /*请求的函数 返回一个promise格式的data  data的格式为 {list:[],total:number}*/
 export interface IRequestApi {
-  (IInfo: IInfo, state: stateProps): Promise<{ list: any[]; total: number }>;
+  (IInfo: IInfo, state: stateProps, activeTab: string): Promise<{
+    list: any[];
+    total: number;
+  }>;
 }
 //protable 的类型
 export interface ITableProProps {
@@ -79,6 +93,10 @@ export interface ITableProProps {
   headerTitle: string;
   buttons: (IButtons | null)[];
   request: IRequestApi;
+  selectNumVisible?: boolean;
+  tabShow?: boolean;
+  tabPaneArr?: { tab: string; key: string | number }[];
+  filterTableDataChange?: (tabStatus: string, state: stateProps) => void;
 }
 export interface IRef {
   refresh: () => void;

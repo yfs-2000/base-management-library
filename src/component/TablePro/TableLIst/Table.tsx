@@ -1,22 +1,72 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Pagination, Table } from "antd";
 import "./Table.less";
 import ResizeObserver from "resize-observer-polyfill";
 import { ITablesListProps } from "../typing";
-
-function Tables({
+import { TableRowSelection } from "antd/es/table/interface";
+function Tables<T extends object = any>({
   setInfo,
-  dataList,
+  dataList = [],
   loadingList,
   total,
   handleTableSorter,
   headerTitle,
   buttons,
   info,
+  rowSelection: externalRowSelection = {},
+  rowKey,
+  selectNumVisible,
   ...props
 }: ITablesListProps) {
   const tableWarpDom = useRef<HTMLDivElement>(null);
   const [tableHeight, setTableHeight] = useState<string | number>("100%");
+  const [selectedRowKey, setSelectedRowKey] = useState<React.Key[]>([]); //选中表格的id
+  //如果有传入的key值转选中传入的
+  const RowKeys = externalRowSelection?.selectedRowKeys || selectedRowKey;
+  //根据外部传入的函数选中是否禁用
+  const disabledFn = useRef(externalRowSelection?.getCheckboxProps);
+  disabledFn.current = externalRowSelection?.getCheckboxProps;
+  const disabled = useCallback((record) => {
+    return disabledFn.current ? disabledFn.current(record).disabled : false;
+  }, []);
+  //data变化时就筛选一遍
+  useEffect(() => {
+    setSelectedRowKey((value) => {
+      return dataList.filter(
+        (item) => value.includes(item[rowKey as string]) && !disabled(item)
+      );
+    });
+  }, [dataList, rowKey, disabled]);
+  const rowSelection: TableRowSelection<T> = {
+    onChange: setSelectedRowKey,
+    selectedRowKeys: selectedRowKey,
+    renderCell: (checked, record, index, originNode) => (
+      <div
+        onClick={() => {
+          if (disabled(record)) return;
+          let newSelectedRowKey;
+          if (checked) {
+            newSelectedRowKey = selectedRowKey.filter(
+              // @ts-ignore
+              (key) => key !== record[rowKey]
+            );
+          } else {
+            // @ts-ignore
+            selectedRowKey.push(record[[rowKey]]);
+            newSelectedRowKey = [...selectedRowKey];
+          }
+          setSelectedRowKey(newSelectedRowKey);
+        }}
+        className={"renderCellBoxStyle"}
+        style={{
+          cursor: disabled(record) ? "not-allowed" : "pointer",
+        }}
+      >
+        {originNode}
+      </div>
+    ),
+    ...externalRowSelection,
+  };
   const onChange = (current: number, pageSize: number | undefined) => {
     setInfo((state) => ({
       ...state,
@@ -59,7 +109,10 @@ function Tables({
     <div className={"tablesWarp"} ref={tableWarpDom}>
       <div className={"tableListView"}>
         <div className={"tableListHeader"}>
-          <div className={"tableListHeaderText"}>{headerTitle}</div>
+          <div className={"tableListHeaderText"}>
+            {headerTitle}
+            {selectNumVisible && ` 选中了${selectedRowKey.length}条数据`}
+          </div>
           <div>
             {buttons.map((item) => {
               if (item) {
@@ -67,7 +120,7 @@ function Tables({
                   <Button
                     icon={<i className={`iconfont ${item.iconName}`} />}
                     type={item.type}
-                    onClick={item.click}
+                    onClick={() => item.click(RowKeys)}
                     key={item.text}
                     className={"tableListHeaderButton"}
                     disabled={item.disabled}
@@ -80,13 +133,15 @@ function Tables({
             })}
           </div>
         </div>
-        <Table
+        <Table<T>
           scroll={{ x: "true", y: tableHeight }}
           pagination={false}
           bordered={false}
           dataSource={dataList}
           loading={loadingList}
           onChange={handleTableSorter}
+          rowSelection={rowSelection}
+          rowKey={rowKey}
           {...props}
         />
       </div>

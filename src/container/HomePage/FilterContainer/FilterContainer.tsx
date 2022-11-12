@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,PropsWithChildren  } from "react";
 import { Layout, Menu } from "antd";
 import MyHeader from "../Header/Header";
 import { IMenu } from "src/config/menu";
@@ -8,7 +8,7 @@ import styles from "./FilterContainer.module.less";
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const FilterContainer: React.FC<{ routerArr: IMenu[] }> = ({
+const FilterContainer: React.FC<PropsWithChildren<{ routerArr: IMenu[] }>> = ({
   children,
   routerArr,
 }) => {

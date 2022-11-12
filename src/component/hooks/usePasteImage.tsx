@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-
+import usePersistFn from "./usePersistFn";
 const usePasteImage = (pasteHandle: (file: File[]) => void) => {
+  const pasteHandleRef = usePersistFn(pasteHandle);
   useEffect(() => {
     const fn = function (event: ClipboardEvent) {
       const items = event.clipboardData?.items;
@@ -15,7 +16,7 @@ const usePasteImage = (pasteHandle: (file: File[]) => void) => {
         }
       }
       if (file.length > 0) {
-        pasteHandle(file);
+        pasteHandleRef.current(file);
       }
       // 此时file就是剪切板中的图片文件
     };
@@ -23,7 +24,7 @@ const usePasteImage = (pasteHandle: (file: File[]) => void) => {
     return () => {
       document.removeEventListener("paste", fn);
     };
-  }, [pasteHandle]);
+  }, [pasteHandleRef]);
   return null;
 };
 

@@ -3,7 +3,7 @@ import { Redirect, RouteComponentProps } from "react-router-dom";
 import { useAppSelector } from "../redux/hook";
 //权限
 const Auth = (
-  WrappedComponent: React.FC<any>
+    WrappedComponent: React.FC<any>
 ): React.FC<RouteComponentProps> => {
   return function (props) {
     /*估计token 去判断是否存在 如果不存在 那么返回对应的*/

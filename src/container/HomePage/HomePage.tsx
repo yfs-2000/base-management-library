@@ -1,8 +1,8 @@
-import React, { useEffect, Suspense, useState } from "react";
+import React, { useEffect, Suspense, useState, lazy } from "react";
 import AuthWarpHoc from "../../HOC/AuthWarpHoc";
 import routers, { IMenu } from "src/config/menu";
 import FilterContainer from "./FilterContainer/FilterContainer";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Route, Routes, Outlet } from "react-router-dom";
 import NoPermission from "../../pages/NoPermission/NoPermission";
 import { Spin } from "antd";
 import styles from "./HomePage.module.less";
@@ -12,9 +12,10 @@ import {
   updateUserInfo,
 } from "../../redux/action";
 import { useAppDispatch } from "../../redux/hook";
+const Home = lazy(() => import("../../pages/Home"));
 const HomePage = () => {
   const reduxDispatch = useAppDispatch();
-  const [routerArr, setRouterArr] = useState<IMenu[]>([]);//加入权限的路由表
+  const [routerArr, setRouterArr] = useState<IMenu[]>([]); //加入权限的路由表
   useEffect(() => {
     let unLoad = false;
     /*通过token 请求权限*/
@@ -71,20 +72,24 @@ const HomePage = () => {
           </div>
         }
       >
-        <Switch>
+        <Routes>
           {routerArr.map((item) => {
-            if (item.component) {
+            if (item.element) {
               return <Route key={item.path} {...item} />;
             } else if (item.sub.length) {
-              return item.sub.map((child) => (
-                <Route key={child.path} {...child} />
-              ));
+              return (
+                <Route key={item.path} path={item.path} element={<Outlet />}>
+                  {item.sub.map((child) => (
+                    <Route key={child.path} {...child} />
+                  ))}
+                </Route>
+              );
             }
             return null;
           })}
-          <Redirect exact={true} from={"/"} to={"/Home"} />
-          <Route component={NoPermission} />
-        </Switch>
+          <Route index element={<Home />} />
+          <Route path="*" element={<NoPermission />} />
+        </Routes>
       </Suspense>
     </FilterContainer>
   );

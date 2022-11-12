@@ -3,7 +3,8 @@ import { IUseRequestResult, IInfo, IRequestApi, stateProps } from "./typing";
 import useUnComponent from "src/component/hooks/useUnComponent";
 const useRequest = (
   request: IRequestApi,
-  state: stateProps
+  state: stateProps,
+  activeTab: string
 ): IUseRequestResult => {
   const [info, setInfo] = useState<IInfo>({
     size: 20,
@@ -20,7 +21,7 @@ const useRequest = (
     loadingNum.current++;
     const nowLoadingNum = loadingNum.current;
     request &&
-      request(info, state)
+      request(info, state, activeTab)
         .then((res) => {
           if (loadingNum.current !== nowLoadingNum || UnComponent.current) {
             return;
@@ -37,7 +38,7 @@ const useRequest = (
           setLoadingList(false);
           loadingNum.current--;
         });
-  }, [request, info, UnComponent, state]);
+  }, [request, info, UnComponent, state, activeTab]);
   const handleTableSorter = (pagination: any, filters: any, sorter: any) => {
     setInfo((value) => ({
       ...value,

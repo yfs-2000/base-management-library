@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn"; // 导入本地化语言
@@ -15,7 +15,7 @@ function App() {
   return (
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
-        <Router>
+        <BrowserRouter>
           <Suspense
             fallback={
               <div className={"suspenseApp"}>
@@ -23,12 +23,12 @@ function App() {
               </div>
             }
           >
-            <Switch>
-              <Route exact={true} path={"/login"} component={Login} />
-              <Route path={"/"} component={HomePage} />
-            </Switch>
+            <Routes>
+              <Route path={"/login"} element={<Login />} />
+              <Route path={"/"} element={<HomePage />} />
+            </Routes>
           </Suspense>
-        </Router>
+        </BrowserRouter>
       </Provider>
     </ConfigProvider>
   );

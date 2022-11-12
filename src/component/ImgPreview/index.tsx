@@ -1,11 +1,11 @@
 import React from "react";
 import { Modal } from "antd";
+import MyImages from "src/component/MyImages";
 interface ImgPreviewProps {
   visible: boolean;
   onCancel: () => void;
   previewImage: string;
 }
-//图片放大预览的组件
 const ImgPreview: React.FC<ImgPreviewProps> = ({
   visible,
   onCancel,
@@ -20,8 +20,14 @@ const ImgPreview: React.FC<ImgPreviewProps> = ({
       }}
       centered
       onCancel={onCancel}
+      width={"auto"}
     >
-      <img alt="图片" style={{ width: "100%" }} src={previewImage} />
+      <MyImages
+        alt="图片"
+        style={{ width: "60vw", height: "70vh", objectFit: "contain" }}
+        src={previewImage}
+        key={previewImage}
+      />
     </Modal>
   );
 };

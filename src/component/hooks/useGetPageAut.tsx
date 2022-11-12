@@ -4,7 +4,8 @@ import { useLocation } from "react-router-dom";
 const useGetPageAut = () => {
   const pathName = useLocation().pathname;
   const pagesAut = useAppSelector((state) => state.userTress);
-  return pagesAut.find((item) => item.pathName === pathName)!.aut;
+  const Tress = pagesAut.find((item) => item.pathName === pathName);
+  return Tress ? Tress.aut : [];
 };
 
 export default useGetPageAut;

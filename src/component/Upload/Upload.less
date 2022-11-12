@@ -1,0 +1,73 @@
+.lux-upload{
+  display: flex;
+  flex-wrap: wrap;
+}
+.lux-upload-img-warp{
+  margin: 0 10px 10px 0;
+  border: 2px solid #dfe4e7;
+  padding: 5px;
+  width: 300px;
+  height: 300px;
+  &>div{
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.lux-upload-img-done{
+  &>img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  &:hover{
+    .lux-upload-img-hand{
+      display: flex;
+    }
+  }
+}
+.lux-upload-img-hand{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.3);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  span{
+    cursor: pointer;
+  }
+  span+span{
+    margin-left: 10px;
+  }
+
+}
+.lux-upload-img-error{
+  color: var(--error-color);
+  &:hover{
+    .lux-upload-img-hand{
+      display: flex;
+    }
+  }
+}
+.lux-upload-disabled{
+  .lux-upload-icon{
+    cursor: not-allowed;
+  }
+}
+.lux-upload-icon{
+  background-color: #fafafa;
+  border: 1px dashed #dfe4e7;
+  border-radius: 0px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 300px;
+}

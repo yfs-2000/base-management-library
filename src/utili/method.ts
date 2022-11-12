@@ -1,6 +1,7 @@
 //将url 转为 blob
 import { message } from "antd";
-
+import { Dayjs } from "dayjs";
+import { stateProps } from "../component/TablePro/typing";
 export function urlTransiztionFile(img: string) {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -25,8 +26,8 @@ export function urlTransiztionFile(img: string) {
 }
 //减低图片质量
 export function decreaseImageQuality(
-  file: File,
-  quality: number = 0.2
+    file: File,
+    quality: number = 0.2
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const Url = URL.createObjectURL(file);
@@ -47,6 +48,17 @@ export function getBase64(img: File, callback: (result: string) => void) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result as string));
   reader.readAsDataURL(img);
+}
+export function asyncGetBase64(img: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => resolve(reader.result as string));
+      reader.readAsDataURL(img);
+    } catch (e) {
+      reject(e);
+    }
+  });
 }
 //base64转file
 export function dataURLtoFile(dataurl: string = "", filename: string) {
@@ -133,3 +145,105 @@ export function copyText(text: string) {
   document.execCommand("copy");
   document.body.removeChild(node);
 }
+/**
+ * 时间参数的问题
+ * @param state
+ */
+export function queryTime(state: stateProps, st = "st", ed = "ed") {
+  const states = { ...state };
+  const { time } = states;
+  if (time) {
+    states[st] = (time as [Dayjs, Dayjs])[0].format("YYYY-MM-DD");
+    states[ed] = (time as [Dayjs, Dayjs])[1].format("YYYY-MM-DD");
+    delete states.time;
+  }
+  return states;
+}
+
+let imgUid = 0;
+export async function FileAddImages(
+    files: File[],
+    oldImg_url: any[],
+    status = "done"
+) {
+  const imgArr = [];
+  for (let i = 0; i < files.length; i++) {
+    const base64 = await decreaseImageQuality(files[i], 0.02);
+    imgArr.push({
+      originFileObj: files[i],
+      url: base64,
+      uid: `-${++imgUid}`,
+      status,
+      name: files[i].name,
+    });
+  }
+  return oldImg_url.concat(imgArr);
+}
+export const debounce = (fn: any, time: number, isImmediately?: boolean) => {
+  let prevTime = 0;
+  let timer: NodeJS.Timeout | null;
+  return (...ags: any[]) => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    if (prevTime <= new Date().valueOf() && isImmediately) {
+      prevTime = new Date().valueOf() + time;
+      fn(...ags);
+    } else {
+      timer = setTimeout(() => {
+        fn(...ags);
+        timer = null;
+        prevTime = new Date().valueOf() + time;
+      }, time);
+    }
+  };
+};
+const system_version = "1.0";
+class LocalStorageTime {
+  getItem(name: string) {
+    if (typeof window !== "undefined") {
+      const json = localStorage.getItem(name);
+      if (json) {
+        try {
+          const { pastTime, data, system_version: version } = JSON.parse(json);
+          if (
+              (pastTime && new Date().valueOf() > pastTime) ||
+              version !== system_version
+          ) {
+            return undefined;
+          }
+          return data;
+        } catch (e) {
+          localStorage.removeItem(name);
+          return undefined;
+        }
+      }
+      return json;
+    }
+  }
+  setItem(name: string, data: any, time?: number) {
+    if (typeof window !== "undefined") {
+      return localStorage.setItem(
+          name,
+          JSON.stringify({
+            data,
+            pastTime: time ? new Date().valueOf() + time : undefined,
+            system_version,
+          })
+      );
+    }
+  }
+  removeItem(name: string) {
+    if (typeof window !== "undefined") {
+      return localStorage.removeItem(name);
+    }
+  }
+}
+
+export const myLocalStorage = new LocalStorageTime();
+//+"?x-oss-process=image/auto-orient,1/resize,p_50/quality,q_20" 压缩参数
+const ossHttpUrlAfter = "https://nft.luxfi.io/api/" + "marketplace/";
+export const ossHttpUrlNum = (url: string, num = 1, par = "") =>
+    ossHttpUrlAfter + `${url}/${num}` + par;
+export const ossHttpUrl = (url: string) => ossHttpUrlNum(url, 1);

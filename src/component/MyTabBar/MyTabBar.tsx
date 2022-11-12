@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./MyTabBar.module.less";
 import classnames from "classnames";
-//自定义tabBar的头部
 const MyTabBar = (props: any) => {
   return (
     <ul className={styles.myTabBar}>
