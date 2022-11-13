@@ -12,7 +12,6 @@ import {
   updateUserInfo,
 } from "../../redux/action";
 import { useAppDispatch } from "../../redux/hook";
-const Home = lazy(() => import("../../pages/Home"));
 const HomePage = () => {
   const reduxDispatch = useAppDispatch();
   const [routerArr, setRouterArr] = useState<IMenu[]>([]); //加入权限的路由表
@@ -72,24 +71,7 @@ const HomePage = () => {
           </div>
         }
       >
-        <Routes>
-          {routerArr.map((item) => {
-            if (item.element) {
-              return <Route key={item.path} {...item} />;
-            } else if (item.sub.length) {
-              return (
-                <Route key={item.path} path={item.path} element={<Outlet />}>
-                  {item.sub.map((child) => (
-                    <Route key={child.path} {...child} />
-                  ))}
-                </Route>
-              );
-            }
-            return null;
-          })}
-          <Route index element={<Home />} />
-          <Route path="*" element={<NoPermission />} />
-        </Routes>
+        <Outlet />
       </Suspense>
     </FilterContainer>
   );

@@ -1,31 +1,46 @@
-const { when, whenDev, whenProd, whenTest, ESLINT_MODES, POSTCSS_MODES } = require("@craco/craco");
-const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
-const WebpackBar  = require('webpackbar');
+const {
+  when,
+  whenDev,
+  whenProd,
+  whenTest,
+  ESLINT_MODES,
+  POSTCSS_MODES,
+} = require("@craco/craco");
+const SimpleProgressWebpackPlugin = require("simple-progress-webpack-plugin");
+const WebpackBar = require("webpackbar");
 const CracoAlias = require("craco-alias");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const CracoLessPlugin = require("craco-less");
 const loaderUtils = require("loader-utils");
 const path = require("path");
 const lessModifyVars = {};
-const isEnvProduction = process.env.NODE_ENV === "production"
-const isEnvDevelopment = process.env.NODE_ENV === "development"
+const isEnvProduction = process.env.NODE_ENV === "production";
+const isEnvDevelopment = process.env.NODE_ENV === "development";
 
 module.exports = {
   webpack: {
-
-    plugins: [
-      ...whenProd(() => [
-        new BundleAnalyzerPlugin(),
-        new SimpleProgressWebpackPlugin(),// 查看打包的进度
-        new WebpackBar({
-          profile: true
-        })], [])
-    ],
+    plugins: {
+      add: [
+        ...whenProd(
+          () => [
+            new BundleAnalyzerPlugin(),
+            new SimpleProgressWebpackPlugin(), // 查看打包的进度
+            new WebpackBar({
+              profile: true,
+            }),
+          ],
+          []
+        ),
+      ],
+    },
     configure: (webpackConfig, { env, paths }) => {
-      const minimizerIndex = webpackConfig.optimization.minimizer.findIndex(item => item.options.terserOptions);
-      webpackConfig.optimization.minimizer[minimizerIndex].options.terserOptions.compress.drop_console = isEnvProduction
+      webpackConfig.optimization.minimizer[0].options.compress = {
+        drop_console: isEnvProduction,
+      };
       return webpackConfig;
-    }
+      // webpackConfig.optimization.minimizer[minimizerIndex].options.terserOptions.compress.drop_console = isEnvProduction
+      // return webpackConfig;
+    },
   },
   plugins: [
     {
@@ -33,7 +48,7 @@ module.exports = {
       options: {
         // see in examples section
         aliases: {
-          src: "./src",//变量别名
+          src: "./src", //变量别名
         },
       },
     },
@@ -108,24 +123,24 @@ module.exports = {
       },
     },
   ],
-}
+};
 function getLocalIdent(context, localIdentName, localName, options) {
   // Use the filename or folder name, based on some uses the index.js / index.module.(css|scss|sass) project style
   const fileNameOrFolder = context.resourcePath.match(/index\.module\.less$/)
-      ? "[folder]"
-      : "[name]";
+    ? "[folder]"
+    : "[name]";
   // Create a hash based on a the file location and class name. Will be unique across a project, and close to globally unique.
   const hash = loaderUtils.getHashDigest(
-      path.posix.relative(context.rootContext, context.resourcePath) + localName,
-      "md5",
-      "base64",
-      5
+    path.posix.relative(context.rootContext, context.resourcePath) + localName,
+    "md5",
+    "base64",
+    5
   );
   // Use loaderUtils to find the file or folder name
   const className = loaderUtils.interpolateName(
-      context,
-      fileNameOrFolder + "_" + localName + "__" + hash,
-      options
+    context,
+    fileNameOrFolder + "_" + localName + "__" + hash,
+    options
   );
   // remove the .module that appears in every classname when based on the file.
   return className.replace(".module_", "_");

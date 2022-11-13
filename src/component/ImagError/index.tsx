@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { ossHttpUrl } from "../../utili/constant";
+import { ossHttpUrl } from "../../utili/method";
 
 const Index: FC<{
   url: string;

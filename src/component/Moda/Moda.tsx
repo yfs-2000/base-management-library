@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal } from "antd";
-const MyModal: React.FC = ({ children }) => {
+import { FCC } from "../../global";
+const MyModal: FCC = ({ children }) => {
   return (
     <Modal centered destroyOnClose>
       {children}

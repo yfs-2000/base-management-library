@@ -1,8 +1,8 @@
-import React, { useEffect, useState,PropsWithChildren  } from "react";
+import React, { useEffect, useState, PropsWithChildren } from "react";
 import { Layout, Menu } from "antd";
 import MyHeader from "../Header/Header";
 import { IMenu } from "src/config/menu";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./FilterContainer.module.less";
 
 const { Content, Sider } = Layout;
@@ -12,7 +12,7 @@ const FilterContainer: React.FC<PropsWithChildren<{ routerArr: IMenu[] }>> = ({
   children,
   routerArr,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false); //侧边栏的关闭
   const [openKeys, setOpenKeys] = useState<string[]>(() => {
@@ -44,7 +44,7 @@ const FilterContainer: React.FC<PropsWithChildren<{ routerArr: IMenu[] }>> = ({
           theme="dark"
           mode="inline"
           onClick={({ item, key, keyPath, domEvent }) => {
-            history.push(key + "");
+            navigate(key + "");
           }}
           selectedKeys={SelectedKeys()}
           // @ts-ignore

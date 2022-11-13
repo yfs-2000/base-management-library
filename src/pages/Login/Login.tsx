@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AuthWarpHoc from "src/HOC/AuthWarpHoc";
-import { RouteComponentProps } from "react-router-dom";
 import { Row, Col, Form, Input, Button } from "antd";
 import { updateToken } from "src/redux/action";
 /*import { userLogin } from "src/api/login";*/
@@ -9,7 +8,7 @@ import loginIkon from "src/common/images/loginIkon.png";
 import logo from "src/common/images/logo.png";
 import styles from "./Login.module.less";
 import { useAppDispatch } from "../../redux/hook";
-const Login: React.FC<RouteComponentProps> = ({ history }) => {
+const Login: React.FC = () => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
